@@ -3,26 +3,26 @@ import java.util.Stack;
 
 public class CSP {
 
-    public  void csp(int [][] board , int m, int n){
+    public  void csp(State [][] board , int m, int n){
 
-            Stack<int[][] > arrayList = new Stack<>();
-            arrayList =successor(board,m,n);
+        Stack<State[][] > arrayList = new Stack<>();
+        arrayList =successor(board,m,n);
 
-            while (!arrayList.isEmpty()){
+        while (!arrayList.isEmpty()){
 
-                int [][] temp = arrayList.pop();
+            State [][] temp = arrayList.pop();
 
-                if (is_winner(temp, m,n) ){
-                    print_winner(temp, m ,n);
-                    return;
-                    }
-                else if (not_fail(temp,m,n)){
-                   Stack<int[][]> stack = new Stack<>();
-                   stack = successor(temp,m,n);
-                    for (int i = 0; i <stack.size() ; i++) {
-                        arrayList.push(stack.get(i));
-                    }
+            if (is_winner(temp, m,n) ){
+                print_winner(temp, m ,n);
+                return;
+            }
+            else if (not_fail(temp,m,n)){
+                Stack<State[][]> stack = new Stack<>();
+                stack = successor(temp,m,n);
+                for (int i = 0; i <stack.size() ; i++) {
+                    arrayList.push(stack.get(i));
                 }
+            }
         }
 
 
@@ -41,22 +41,27 @@ public class CSP {
 1 0 0 0 0 1
  */
 
-    public void copy(int[][] board , int [][] board2  , int m , int n){
+    public void copy(State[][] board , State [][] board2  , int m , int n){
         for (int i = 0; i <m ; i++) {
             for (int j = 0; j <n ; j++) {
-                board2[i][j] = board[i][j];
+                board2[i][j] = new State();
+            }
+        }
+        for (int i = 0; i <m ; i++) {
+            for (int j = 0; j <n ; j++) {
+                board2[i][j].price = board[i][j].price;
             }
         }
     }
 
 
-    public Stack<int [][] > successor(int [][] board , int m , int n ){
-        Stack<int [][] > states = new Stack<>();
+    public Stack<State [][] > successor(State [][] board , int m , int n ){
+        Stack<State [][] > states = new Stack<>();
         boolean [][] intial = new boolean[m][n];
 
         for (int i = 0; i <m ; i++) {
             for (int j = 0; j <n ; j++) {
-                if (i>=2 && j>=2 && (board[i][j]!=1 && board[i][j]!=0)){
+                if (i>=2 && j>=2 && (board[i][j].price!=1 && board[i][j].price!=0)){
                     intial[i][j] = true;
                 }
                 else{
@@ -69,29 +74,29 @@ public class CSP {
 
             for (int j = 2; j <n ; j++) {
 
-                if (board[i][j]==1 && intial[i][j]==false){
+                if (board[i][j].price==1 && intial[i][j]==false){
 
-                    board[i][j] = 200;
-                    board[i+1][j] = 200;
-                    int [][] temp3 = new int[m][n];
+                    board[i][j].price = 200;
+                    board[i+1][j].price = 200;
+                    State [][] temp3 = new State[m][n];
                     copy(board , temp3 , m ,n);
                     states.push(temp3);
 
-                    board[i][j] = 100;
-                    board[i+1][j] =-100;
-                    int [][] temp = new int[m][n];
+                    board[i][j].price = 100;
+                    board[i+1][j].price =-100;
+                    State [][] temp = new State[m][n];
                     copy(board , temp , m ,n);
                     states.push(temp);
 
-                    board[i][j] = -100;
-                    board[i+1][j] =100;
-                    int [][] temp2 = new int[m][n];
+                    board[i][j].price = -100;
+                    board[i+1][j].price =100;
+                    State [][] temp2 = new State[m][n];
                     copy(board , temp2 , m ,n);
                     states.push(temp2);
 
 
-                    board[i][j] = 1;
-                    board[i+1][j] = 1;
+                    board[i][j].price = 1;
+                    board[i+1][j].price = 1;
 
                     intial[i][j] = true;
                     intial[i+1][j] = true;
@@ -99,33 +104,33 @@ public class CSP {
                     return states;
 
                 }
-                else if (board[i][j]==0 && intial[i][j]==false){
+                else if (board[i][j].price==0 && intial[i][j]==false){
 
 
-                    board[i][j] = 200;
-                    board[i][j+1] = 200;
-                    int [][] temp3 = new int[m][n];
+                    board[i][j].price = 200;
+                    board[i][j+1].price = 200;
+                    State [][] temp3 = new State[m][n];
                     copy(board , temp3 , m ,n);
                     states.push(temp3);
 
 
-                    board[i][j] = 100;
-                    board[i][j+1] =-100;
-                    int [][] temp = new int[m][n];
+                    board[i][j].price = 100;
+                    board[i][j+1].price =-100;
+                    State [][] temp = new State[m][n];
                     copy(board , temp , m ,n);
                     states.push(temp);
 
-                    board[i][j] = -100;
-                    board[i][j+1] =100;
-                    int [][] temp2 = new int[m][n];
+                    board[i][j].price = -100;
+                    board[i][j+1].price =100;
+                    State [][] temp2 = new State[m][n];
                     copy(board , temp2 , m ,n);
                     states.push(temp2);
 
 
 
 
-                    board[i][j] = 0;
-                    board[i][j+1] = 0;
+                    board[i][j].price = 0;
+                    board[i][j+1].price = 0;
 
                     intial[i][j] = true;
                     intial[i][j+1] = true;
@@ -140,91 +145,91 @@ public class CSP {
 
 
 
-    public boolean is_winner(int [][] board , int m , int n){
+    public boolean is_winner(State [][] board , int m , int n){
         for (int i = 2; i <m ; i++) {
             int plus=0 , neg=0;
             for (int j = 2; j <n ; j++) {
-                if (board[i][j]==100){
+                if (board[i][j].price==100){
                     plus++;
                 }
-                else if (board[i][j]==-100){
+                else if (board[i][j].price==-100){
                     neg++;
                 }
             }
-            if (plus!=board[i][0] || neg != board[i][1])
+            if (plus!=board[i][0].price || neg != board[i][1].price)
                 return false;
         }
 
         for (int i = 2; i <m ; i++) {
             int plus=0 , neg=0;
             for (int j = 2; j <n ; j++) {
-                if (board[j][i]==100){
+                if (board[j][i].price==100){
                     plus++;
                 }
-                else if (board[j][i]==-100){
+                else if (board[j][i].price==-100){
                     neg++;
                 }
             }
-            if (plus!=board[0][i] || neg != board[1][i])
+            if (plus!=board[0][i].price || neg != board[1][i].price)
                 return false;
         }
 
         return true;
     }
 
-    public void print_winner(int [][] board , int m ,int n ){
+    public void print_winner(State [][] board , int m ,int n ){
         for (int i = 0; i <m ; i++) {
             for (int j = 0; j <n ; j++) {
-                    if (board[i][j]==200){
-                        System.out.print("@ ");
-                    }else if (board[i][j]==100){
-                        System.out.print("+ ");
-                    }else if (board[i][j]==-100){
-                        System.out.print("- ");
-                    }
-                    else {
-                    System.out.print(board[i][j] + " ");
-                    }
+                if (board[i][j].price==200){
+                    System.out.print("@ ");
+                }else if (board[i][j].price==100){
+                    System.out.print("+ ");
+                }else if (board[i][j].price==-100){
+                    System.out.print("- ");
+                }
+                else {
+                    System.out.print(board[i][j].price+ " ");
+                }
             }
             System.out.println();
         }
     }
 
-    public boolean not_fail(int [][] board , int m ,int n ){
+    public boolean not_fail(State [][] board , int m ,int n ){
 
         for (int i = 2; i <m ; i++) {
             int plus=0 , neg=0, init =0;
             for (int j = 2; j <n ; j++) {
-                if (board[i][j]==0 || board[i][j]==1){
+                if (board[i][j].price==0 || board[i][j].price==1){
                     init++;
                 }
-                if (board[i][j]==100){
+                if (board[i][j].price==100){
                     plus++;
                 }
-                else if (board[i][j]==-100){
+                else if (board[i][j].price==-100){
                     neg++;
                 }
             }
-            if ( (plus>board[i][0] || neg > board[i][1]) || (plus<board[i][0] && init==0 )
-                    || (neg <board[i][1]  && init==0 )  )
+            if ( (plus>board[i][0].price || neg > board[i][1].price) || (plus<board[i][0].price && init==0 )
+                    || (neg <board[i][1].price  && init==0 )  )
                 return false;
         }
 
         for (int i = 2; i <m ; i++) {
             int plus=0 , neg=0 , init =0;
             for (int j = 2; j <n ; j++) {
-                if (board[j][i]==0 || board[j][i]==1){
+                if (board[j][i].price==0 || board[j][i].price==1){
                     init++;
                 }
-                if (board[j][i]==100){
+                if (board[j][i].price==100){
                     plus++;
                 }
-                else if (board[j][i]==-100){
+                else if (board[j][i].price==-100){
                     neg++;
                 }
             }
-            if( (plus>board[0][i] || neg > board[1][i]) || (plus<board[0][i] && init==0) ||
-                    (neg<board[1][i] && init==0))
+            if( (plus>board[0][i].price || neg > board[1][i].price) || (plus<board[0][i].price && init==0) ||
+                    (neg<board[1][i].price && init==0))
                 return false;
         }
 

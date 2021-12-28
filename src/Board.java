@@ -8,37 +8,42 @@ public class Board {
         n = scanner.nextInt();
         m+=2;
         n+=2;
-        int [][] board = new int[m][n];
-        board[0][0] = 100;
-        board[0][1] = 100;
-        board[1][0] = 100;
-        board[1][1] = -100;
+        State [][] board = new State[m][n];
+        for (int i = 0; i <m ; i++) {
+            for (int j = 0; j <n ; j++) {
+                board[i][j] = new State();
+            }
+        }
+        board[0][0].price = 100;
+        board[0][1].price = 100;
+        board[1][0].price = 100;
+        board[1][1].price = -100;
 
         for (int i = 2; i <m ; i++) {
-            board[i][0] = scanner.nextInt();
+            board[i][0].price = scanner.nextInt();
         }
 
         for (int i = 2; i <m ; i++) {
-            board[i][1] = scanner.nextInt();
+            board[i][1].price = scanner.nextInt();
         }
 
         for (int i = 2; i <n ; i++) {
-            board[0][i] = scanner.nextInt();
+            board[0][i].price = scanner.nextInt();
         }
 
         for (int i = 2; i <n ; i++) {
-            board[1][i] = scanner.nextInt();
+            board[1][i].price = scanner.nextInt();
         }
 
         for (int i = 2; i <m ; i++) {
             for (int j = 2; j <n ; j++) {
-                board[i][j] = scanner.nextInt();
+                board[i][j].price = scanner.nextInt();
             }
         }
 
         for (int i = 0; i <m ; i++) {
             for (int j = 0; j <n ; j++) {
-                System.out.print(board[i][j]+" ");
+                System.out.print(board[i][j].price+" ");
             }
             System.out.println();
         }
