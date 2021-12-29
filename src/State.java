@@ -7,6 +7,6 @@ public class State {
     public State(){
         legal_values.add("+");
         legal_values.add("-");
-        legal_values.add("@");
+        legal_values.add(" ");
     }
 }

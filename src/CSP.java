@@ -8,15 +8,24 @@ public class CSP {
         Stack<State[][] > arrayList = new Stack<>();
         arrayList =successor(board,m,n);
 
+        int x=0;
         while (!arrayList.isEmpty()){
 
             State [][] temp = arrayList.pop();
-
             if (is_winner(temp, m,n) ){
                 print_winner(temp, m ,n);
                 return;
             }
-            else if (not_fail(temp,m,n)){
+            else if (ForwardChecking.forward_cheking(temp,m,n) && not_fail(temp,m,n)){
+//                print_winner(temp,m,n);
+//                System.out.println();
+//                for (int i = 2; i <m ; i++) {
+//                    for (int j = 2; j <n ; j++) {
+//                        System.out.print(temp[i][j].legal_values+" ");
+//                    }
+//                    System.out.println();
+//                }
+//                System.out.println();
                 Stack<State[][]> stack = new Stack<>();
                 stack = successor(temp,m,n);
                 for (int i = 0; i <stack.size() ; i++) {
@@ -50,6 +59,12 @@ public class CSP {
         for (int i = 0; i <m ; i++) {
             for (int j = 0; j <n ; j++) {
                 board2[i][j].price = board[i][j].price;
+                board2[i][j].legal_values.remove("+");
+                board2[i][j].legal_values.remove("-");
+                board2[i][j].legal_values.remove(" ");
+                for (int k = 0; k <board[i][j].legal_values.size() ; k++) {
+                    board2[i][j].legal_values.add(board[i][j].legal_values.get(k));
+                }
             }
         }
     }
@@ -76,23 +91,29 @@ public class CSP {
 
                 if (board[i][j].price==1 && intial[i][j]==false){
 
-                    board[i][j].price = 200;
-                    board[i+1][j].price = 200;
-                    State [][] temp3 = new State[m][n];
-                    copy(board , temp3 , m ,n);
-                    states.push(temp3);
+                    if (board[i][j].legal_values.contains(" ") && board[i+1][j].legal_values.contains(" ")  ) {
+                        board[i][j].price = 200;
+                        board[i + 1][j].price = 200;
+                        State[][] temp3 = new State[m][n];
+                        copy(board, temp3, m, n);
+                        states.push(temp3);
+                    }
 
-                    board[i][j].price = 100;
-                    board[i+1][j].price =-100;
-                    State [][] temp = new State[m][n];
-                    copy(board , temp , m ,n);
-                    states.push(temp);
+                    if (board[i][j].legal_values.contains("+") && board[i+1][j].legal_values.contains("-")  ) {
+                        board[i][j].price = 100;
+                        board[i + 1][j].price = -100;
+                        State[][] temp = new State[m][n];
+                        copy(board, temp, m, n);
+                        states.push(temp);
+                    }
 
-                    board[i][j].price = -100;
-                    board[i+1][j].price =100;
-                    State [][] temp2 = new State[m][n];
-                    copy(board , temp2 , m ,n);
-                    states.push(temp2);
+                    if (board[i][j].legal_values.contains("-") && board[i+1][j].legal_values.contains("+")  ) {
+                        board[i][j].price = -100;
+                        board[i + 1][j].price = 100;
+                        State[][] temp2 = new State[m][n];
+                        copy(board, temp2, m, n);
+                        states.push(temp2);
+                    }
 
 
                     board[i][j].price = 1;
@@ -107,24 +128,29 @@ public class CSP {
                 else if (board[i][j].price==0 && intial[i][j]==false){
 
 
-                    board[i][j].price = 200;
-                    board[i][j+1].price = 200;
-                    State [][] temp3 = new State[m][n];
-                    copy(board , temp3 , m ,n);
-                    states.push(temp3);
+                    if (board[i][j].legal_values.contains(" ") && board[i][j+1].legal_values.contains(" ")) {
+                        board[i][j].price = 200;
+                        board[i][j + 1].price = 200;
+                        State[][] temp3 = new State[m][n];
+                        copy(board, temp3, m, n);
+                        states.push(temp3);
+                    }
 
+                    if (board[i][j].legal_values.contains("+") && board[i][j+1].legal_values.contains("-")) {
+                        board[i][j].price = 100;
+                        board[i][j + 1].price = -100;
+                        State[][] temp = new State[m][n];
+                        copy(board, temp, m, n);
+                        states.push(temp);
+                    }
 
-                    board[i][j].price = 100;
-                    board[i][j+1].price =-100;
-                    State [][] temp = new State[m][n];
-                    copy(board , temp , m ,n);
-                    states.push(temp);
-
-                    board[i][j].price = -100;
-                    board[i][j+1].price =100;
-                    State [][] temp2 = new State[m][n];
-                    copy(board , temp2 , m ,n);
-                    states.push(temp2);
+                    if (board[i][j].legal_values.contains("-") && board[i][j+1].legal_values.contains("+")) {
+                        board[i][j].price = -100;
+                        board[i][j + 1].price = 100;
+                        State[][] temp2 = new State[m][n];
+                        copy(board, temp2, m, n);
+                        states.push(temp2);
+                    }
 
 
 
