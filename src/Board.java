@@ -41,14 +41,6 @@ public class Board {
             }
         }
 
-        for (int i = 0; i <m ; i++) {
-            for (int j = 0; j <n ; j++) {
-                System.out.print(board[i][j].price+" ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-
         CSP csp = new CSP();
         csp.csp(board , m ,n);
 

@@ -9,16 +9,14 @@ public class CSP {
         Stack< Integer > indexes = new Stack<>();
         arrayList =successor(board,m,n,indexes);
 
-        int x=0;
         while (!arrayList.isEmpty()){
 
             State [][] temp = arrayList.pop();
             int index1 , index2;
             index1 = indexes.pop();
             index2 = indexes.pop();
-            x++;
+
             if (is_winner(temp, m,n) ){
-                System.out.println("X : "+x);
                 print_winner(temp, m ,n);
                 return;
             }
