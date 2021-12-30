@@ -23,15 +23,9 @@ public class CSP {
                 return;
             }
             else if (ForwardChecking.forward_cheking(temp,m,n, index1 , index2) && not_fail(temp,m,n)){
-//                print_winner(temp,m,n);
-//                System.out.println();
-//                for (int i = 2; i <m ; i++) {
-//                    for (int j = 2; j <n ; j++) {
-//                        System.out.print(temp[i][j].legal_values+" ");
-//                    }
-//                    System.out.println();
-//                }
-//                System.out.println();
+//for using ac3 you can delete "ForwardChecking.forward_cheking(temp,m,n, index1 , index2)"  from if
+                // and writ "AC3.arc_consistancy(board, m, n)"
+
                 Stack<State[][]> stack = new Stack<>();
                 stack = successor(temp,m,n, indexes);
                 for (int i = 0; i <stack.size() ; i++) {
@@ -43,10 +37,6 @@ public class CSP {
 
     }
 /*
-1220
-753
-340
-
 6 6
 1 2 3 1 2 1
 1 2 1 3 1 2
@@ -100,99 +90,11 @@ public class CSP {
             for (int j = 2; j <n ; j++) {
 
 
-                    if (board[i][j].price == 1 && intial[i][j] == false) {
-                        if (board[i][j].legal_values.size() + board[i+1][j].legal_values.size() ==
-                        MRV_LCV.mrv(board,m,n)) {
-
-                        states = MRV_LCV.lcv(board,m,n,i,j,integerStack);
-                        intial[i][j] = true;
-                        intial[i + 1][j] = true;
-
-                        return states;
-                        }else{
-                            intial[i][j] = true;
-                            intial[i + 1][j] = true;
-                        }
-                    }else if (board[i][j].price == 0 && intial[i][j] == false) {
-
-                        if (board[i][j].legal_values.size() + board[i][j+1].legal_values.size() ==
-                                MRV_LCV.mrv(board, m, n)) {
-
-                          states = MRV_LCV.lcv(board,m,n,i,j,integerStack);
-
-                            intial[i][j] = true;
-                            intial[i][j + 1] = true;
-
-                            return states;
-                        }else {
-                            intial[i][j] = true;
-                            intial[i][j + 1] = true;
-
-                        }
-                    }
-            }
-        }
-
-        return states;
-    }
-
-    public Stack<State [][] > successor2(State [][] board , int m , int n , Stack<Integer> integerStack ){
-        Stack<State [][] > states = new Stack<>();
-        boolean [][] intial = new boolean[m][n];
-
-        for (int i = 0; i <m ; i++) {
-            for (int j = 0; j <n ; j++) {
-                if (i>=2 && j>=2 && (board[i][j].price!=1 && board[i][j].price!=0)){
-                    intial[i][j] = true;
-                }
-                else{
-                    intial[i][j]= false;
-                }
-            }
-        }
-
-        for (int i = 2; i <m ; i++) {
-
-            for (int j = 2; j <n ; j++) {
-
-
                 if (board[i][j].price == 1 && intial[i][j] == false) {
                     if (board[i][j].legal_values.size() + board[i+1][j].legal_values.size() ==
                             MRV_LCV.mrv(board,m,n)) {
 
-                        if (board[i][j].legal_values.contains(" ") && board[i + 1][j].legal_values.contains(" ")) {
-                            board[i][j].price = 200;
-                            board[i + 1][j].price = 200;
-                            State[][] temp3 = new State[m][n];
-                            copy(board, temp3, m, n);
-                            states.push(temp3);
-                            integerStack.push(j);
-                            integerStack.push(i);
-                        }
-
-                        if (board[i][j].legal_values.contains("+") && board[i + 1][j].legal_values.contains("-")) {
-                            board[i][j].price = 100;
-                            board[i + 1][j].price = -100;
-                            State[][] temp = new State[m][n];
-                            copy(board, temp, m, n);
-                            states.push(temp);
-                            integerStack.push(j);
-                            integerStack.push(i);
-                        }
-
-                        if (board[i][j].legal_values.contains("-") && board[i + 1][j].legal_values.contains("+")) {
-                            board[i][j].price = -100;
-                            board[i + 1][j].price = 100;
-                            State[][] temp2 = new State[m][n];
-                            copy(board, temp2, m, n);
-                            states.push(temp2);
-                            integerStack.push(j);
-                            integerStack.push(i);
-                        }
-
-                        board[i][j].price = 1;
-                        board[i + 1][j].price = 1;
-
+                        states = MRV_LCV.lcv(board,m,n,i,j,integerStack);
                         intial[i][j] = true;
                         intial[i + 1][j] = true;
 
@@ -201,45 +103,12 @@ public class CSP {
                         intial[i][j] = true;
                         intial[i + 1][j] = true;
                     }
-                } else if (board[i][j].price == 0 && intial[i][j] == false) {
-
+                }else if (board[i][j].price == 0 && intial[i][j] == false) {
 
                     if (board[i][j].legal_values.size() + board[i][j+1].legal_values.size() ==
                             MRV_LCV.mrv(board, m, n)) {
 
-                        if (board[i][j].legal_values.contains(" ") && board[i][j + 1].legal_values.contains(" ")) {
-                            board[i][j].price = 200;
-                            board[i][j + 1].price = 200;
-                            State[][] temp3 = new State[m][n];
-                            copy(board, temp3, m, n);
-                            states.push(temp3);
-                            integerStack.push(j + 1);
-                            integerStack.push(i);
-                        }
-
-                        if (board[i][j].legal_values.contains("+") && board[i][j + 1].legal_values.contains("-")) {
-                            board[i][j].price = 100;
-                            board[i][j + 1].price = -100;
-                            State[][] temp = new State[m][n];
-                            copy(board, temp, m, n);
-                            states.push(temp);
-                            integerStack.push(j + 1);
-                            integerStack.push(i);
-                        }
-
-                        if (board[i][j].legal_values.contains("-") && board[i][j + 1].legal_values.contains("+")) {
-                            board[i][j].price = -100;
-                            board[i][j + 1].price = 100;
-                            State[][] temp2 = new State[m][n];
-                            copy(board, temp2, m, n);
-                            states.push(temp2);
-                            integerStack.push(j + 1);
-                            integerStack.push(i);
-                        }
-
-
-                        board[i][j].price = 0;
-                        board[i][j + 1].price = 0;
+                        states = MRV_LCV.lcv(board,m,n,i,j,integerStack);
 
                         intial[i][j] = true;
                         intial[i][j + 1] = true;
@@ -256,7 +125,6 @@ public class CSP {
 
         return states;
     }
-
 
     public boolean is_winner(State [][] board , int m , int n){
         for (int i = 2; i <m ; i++) {

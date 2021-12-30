@@ -17,12 +17,7 @@ public class MRV_LCV {
             }
         }
 
-//        for (int i = 0; i < m; i++) {
-//            for (int j = 0; j < n; j++) {
-//                System.out.print(board[i][j].price+" ");
-//            }
-//            System.out.println();
-//        }
+
 
         int min = Integer.MAX_VALUE;
         for (int i = 2; i <m ; i++) {
