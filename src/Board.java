@@ -40,6 +40,7 @@ public class Board {
                 board[i][j].price = scanner.nextInt();
             }
         }
+        System.out.println("salam");
 
         CSP csp = new CSP();
         csp.csp(board , m ,n);

@@ -46,6 +46,16 @@ public class CSP {
 1 1 0 0 1 1
 1 1 0 0 1 1
 1 0 0 0 0 1
+
+4 4
+1 0 0 0
+1 0 0 0
+1 0 0 0
+0 1 0 0
+1 1 0 0
+1 1 1 1
+0 0 1 1
+0 0 0 0
  */
 
     public static void copy(State[][] board , State [][] board2  , int m , int n){
@@ -194,9 +204,9 @@ public class CSP {
                 return false;
         }
 
-        for (int i = 2; i <m ; i++) {
+        for (int i = 2; i <n ; i++) {
             int plus=0 , neg=0 , init =0;
-            for (int j = 2; j <n ; j++) {
+            for (int j = 2; j <m ; j++) {
                 if (board[j][i].price==0 || board[j][i].price==1){
                     init++;
                 }
